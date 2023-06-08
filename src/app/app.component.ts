@@ -73,7 +73,7 @@ export class AppComponent implements OnInit {
         if (control.value === 'test@test.com') {
           resolve({ emailIsForbiden: true });
         } else {
-          resolve(null);
+          reject(null); // Reject the promise when the email value is valid
         }
       }, 1500);
     });
