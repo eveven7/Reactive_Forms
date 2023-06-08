@@ -3,41 +3,52 @@
     <div class="col-xs-12 col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2">
       <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
         <div formGroupName="userData">
-        <div class="form-group">
-          <label for="username">Username</label>
-          <input
-            type="text"
-            id="username"
-            [formControlName]="'username'"
-            class="form-control"
-          />
-          <span
-            *ngIf="
-              !signupForm.get('userData.username').valid &&
-              signupForm.get('userData.username').touched
-            "
-          >
-            Please enter a valid username</span
-          >
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input
+              type="text"
+              id="username"
+              [formControlName]="'username'"
+              class="form-control"
+            />
+            <span
+              *ngIf="
+                !signupForm.get('userData.username').valid &&
+                signupForm.get('userData.username').touched
+              "
+            >
+              <span
+                *ngIf="
+                  signupForm.get('userData.username').errors['nameIsForbiden']
+                "
+              >
+                This name is invalid</span
+              >
+              <span
+                *ngIf="signupForm.get('userData.username').errors['required']"
+              >
+                This field is required</span
+              >
+            </span>
+          </div>
+          <div class="form-group">
+            <label for="email">email</label>
+            <input
+              [formControlName]="'email'"
+              type="text"
+              id="email"
+              class="form-control"
+            />
+            <span
+              *ngIf="
+                !signupForm.get('userData.email').valid &&
+                signupForm.get('userData.email').touched
+              "
+            >
+              Please enter a valid email</span
+            >
+          </div>
         </div>
-        <div class="form-group">
-          <label for="email">email</label>
-          <input
-            [formControlName]="'email'"
-            type="text"
-            id="email"
-            class="form-control"
-          />
-          <span
-          *ngIf="
-              !signupForm.get('userData.email').valid &&
-              signupForm.get('userData.email').touched
-            "
-        >
-          Please enter a valid email</span
-        >
-        </div>
-      </div>
         <div class="radio" *ngFor="let gender of genders">
           <label>
             <input formControlName="gender" type="radio" [value]="gender" />{{
@@ -45,13 +56,21 @@
             }}
           </label>
         </div>
-        <span
-        *ngIf="
-          !signupForm.valid && signupForm.touched
-        "
-      >
-        Please enter a valid data</span
-      >
+        <div formArrayName="hobbies">
+          <h4>Your hobbies</h4>
+          <button class="btn btn-default" type="button" (click)="onAddHobby()">
+            Add hobby
+          </button>
+          <div
+            class="form-group"
+            *ngFor="let hobbyControl of getControls(); let i = index"
+          >
+            <input type="text" class="form-control" [formControlName]="i" />
+          </div>
+        </div>
+        <span *ngIf="!signupForm.valid && signupForm.touched">
+          Please enter a valid data</span
+        >
         <button class="btn btn-primary" type="submit">Submit</button>
       </form>
     </div>
